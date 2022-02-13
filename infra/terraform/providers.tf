@@ -4,6 +4,7 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 2.9"
     }
+  }
 
   cloud {
     organization = "mbraunwart-test"
@@ -11,7 +12,6 @@ terraform {
     workspaces {
       name = "tf-demo-dev"
     }
-  }
   }
 }
 
