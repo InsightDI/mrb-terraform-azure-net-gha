@@ -12,7 +12,7 @@ jobs:
         shell: bash
   deploy-dev:
     needs: build
-    uses: hca-ccoe/demo-tfc-workflow/.github/workflows/terraform.yml@mrb/initial
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
     with:
       env: dev
     secrets:
