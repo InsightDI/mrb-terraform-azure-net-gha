@@ -5,11 +5,9 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run build script
-        run: echo "Build Script"
-        shell: bash
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/dotnetcore.yml@mrb/initial
+    with:
+      app-path: app
   deploy-dev:
     needs: build
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
