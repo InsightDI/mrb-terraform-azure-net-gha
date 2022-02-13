@@ -10,20 +10,18 @@ on:
 jobs:
   build:
 
-    runs-on: windows-2019
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core
+    - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: '6.0.x'
+        include-prerelease: true
 
     - name: Build with dotnet
-      run: |
-        cd ${{ inputs.app-path }}
-        dotnet build ./eShopOnWeb.sln --configuration Release
-
-    - uses: microsoft/RichCodeNavIndexer@v0.1
-      with:
-        repo-token: ${{ github.token }}
+      run: dotnet build ${{ inputs.app-path }}/eShopOnWeb.sln --configuration Release
+    
+    - name: Test with dotnet
+      run: dotnet test ${{ inputs.app-path }}/eShopOnWeb.sln --configuration Release
