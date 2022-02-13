@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, Linux, X64, enterprise]
+    runs-on: ubuntu-latest
     steps:
       - name: Run build script
         run: echo "Build Script"
