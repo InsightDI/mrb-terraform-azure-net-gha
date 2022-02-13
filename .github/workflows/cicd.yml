@@ -15,6 +15,7 @@ jobs:
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
     with:
       env: dev
+      tf-path: infra/terraform
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 #   deploy-test:

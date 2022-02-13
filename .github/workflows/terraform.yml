@@ -6,6 +6,9 @@ on:
       env:
         required: true
         type: string
+      tf-path:
+        required: true
+        type: string
     secrets:
       TF_API_TOKEN:
         required: true
@@ -34,11 +37,14 @@ jobs:
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init
+      run: | 
+        cd ${{ inputs.tf-path }}
+        terraform init
 
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
       run: terraform fmt -check
+      continue-on-error: true
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
