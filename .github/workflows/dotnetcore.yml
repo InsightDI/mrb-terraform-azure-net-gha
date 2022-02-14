@@ -3,13 +3,16 @@ name: eShopOnWeb Rich Code Navigation
 on:
   workflow_call:
     inputs:
-      app-path:
-        required: true
-        type: string
       artifact-name:
         required: true
         type: string
         default: build
+      project-file:
+        required: true
+        type: string
+      project-path:
+        required: true
+        type: string
 
 jobs:
   build:
@@ -25,17 +28,17 @@ jobs:
         include-prerelease: true
 
     - name: Build
-      run: dotnet build ${{ inputs.app-path }} -c Release
+      run: dotnet build ${{ inputs.project-path }}/${{ inputs.project-file }} -c Release
     
     - name: Test
-      run: dotnet test ${{ inputs.app-path }} -c Release
+      run: dotnet test ${{ inputs.project-path }}/${{ inputs.project-file }} -c Release
 
     - name: Publish 
-      run: dotnet publish ${{ inputs.app-path }} -c Release -o Build
+      run: dotnet publish ${{ inputs.project-path }}/${{ inputs.project-file }} -c Release -o Build
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.2
       with:
         name: ${{ inputs.artifact-name }}
-        path: ${{ inputs.app-path }}/Build
+        path: ${{ inputs.project-path }}/Build
         if-no-files-found: error

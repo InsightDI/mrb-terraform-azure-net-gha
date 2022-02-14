@@ -7,13 +7,15 @@ jobs:
   build-api:
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/dotnetcore.yml@mrb/initial
     with:
-      app-path: app/src/Web/Web.csproj
       artifact-name: PublicApi
+      project-file: Web.csproj
+      project-path: app/src/Web
   build-web:
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/dotnetcore.yml@mrb/initial
     with:
-      app-path: app/src/PublicApi/PublicApi.csproj
       artifact-name: Web
+      project-file: PublicApi.csproj
+      project-path: app/src/PublicApi
   deploy-dev:
     needs: [build-api, build-web]
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
