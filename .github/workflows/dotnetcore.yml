@@ -21,7 +21,7 @@ jobs:
         include-prerelease: true
 
     - name: Build with dotnet
-      run: dotnet build ${{ inputs.app-path }}/eShopOnWeb.sln --configuration Release
+      run: dotnet build ${{ inputs.app-path }} --configuration Release
     
     - name: Test with dotnet
-      run: dotnet test ${{ inputs.app-path }}/eShopOnWeb.sln --configuration Release
+      run: dotnet test ${{ inputs.app-path }} --configuration Release

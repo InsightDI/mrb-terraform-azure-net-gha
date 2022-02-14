@@ -4,10 +4,14 @@ on:
   push:
 
 jobs:
-  build:
+  build-api:
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/dotnetcore.yml@mrb/initial
     with:
-      app-path: app
+      app-path: app/src/Web    
+  build-web:
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/dotnetcore.yml@mrb/initial
+    with:
+      app-path: app/src/PublicApi 
   deploy-dev:
     needs: build
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
