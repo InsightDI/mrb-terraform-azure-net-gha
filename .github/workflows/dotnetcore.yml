@@ -6,6 +6,10 @@ on:
       app-path:
         required: true
         type: string
+      artifact-name:
+        required: true
+        type: string
+        default: build
 
 jobs:
   build:
@@ -20,8 +24,18 @@ jobs:
         dotnet-version: '6.0.x'
         include-prerelease: true
 
-    - name: Build with dotnet
-      run: dotnet build ${{ inputs.app-path }} --configuration Release
+    - name: Build
+      run: dotnet build ${{ inputs.app-path }} -c Release
     
-    - name: Test with dotnet
-      run: dotnet test ${{ inputs.app-path }} --configuration Release
+    - name: Test
+      run: dotnet test ${{ inputs.app-path }} -c Release
+
+    - name: Publish 
+      run: dotnet publish ${{ inputs.app-path }} -c Release -o Build
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.2.2
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.app-path }}/Build
+        if-no-files-found: error
