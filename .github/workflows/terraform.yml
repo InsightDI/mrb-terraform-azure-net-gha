@@ -60,7 +60,7 @@ jobs:
 
     - name: Terraform Outputs
       run: |
-        terraform outputs -json
+        terraform output -json
         $outputs = terraform output -json
         Write-Host $outputs
         $outputsJson = $outputs | ConvertFrom-Json
