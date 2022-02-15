@@ -58,8 +58,7 @@ jobs:
       run: terraform apply -auto-approve
       working-directory: ${{ inputs.tf-path }}
 
-    - run: |
-        terraform output -json ./outputs.json
-        Get-Content outputs.json | ConvertFrom-Json
+    - name: Terraform Outputs
+      run: terraform output -json | ConvertFrom-Json
       shell: pwsh
       working-directory: ${{ inputs.tf-path }}
