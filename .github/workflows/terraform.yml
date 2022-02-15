@@ -60,7 +60,7 @@ jobs:
 
     - name: Terraform Outputs
       run: |
-        $outputs = terraform output -json | ConvertFrom-Json
+        $outputs = $(terraform output -json) | ConvertFrom-Json
         Write-Host $outputs
       shell: pwsh
       working-directory: ${{ inputs.tf-path }}
