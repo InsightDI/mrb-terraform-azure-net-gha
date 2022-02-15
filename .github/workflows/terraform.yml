@@ -62,3 +62,4 @@ jobs:
         $outputs = $(terraform output)
         Write-Host $outputs
       shell: pwsh
+      working-directory: ${{ inputs.tf-path }}
