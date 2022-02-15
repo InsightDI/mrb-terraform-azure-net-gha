@@ -59,6 +59,8 @@ jobs:
       working-directory: ${{ inputs.tf-path }}
 
     - name: Terraform Outputs
-      run: terraform output -json
+      run: |
+        $outputs = terraform output -json | ConvertFrom-Json
+        Write-Host $outputs
       shell: pwsh
       working-directory: ${{ inputs.tf-path }}
