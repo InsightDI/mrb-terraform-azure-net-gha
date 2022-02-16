@@ -34,6 +34,7 @@ jobs:
       tf-path: infra/terraform
       output-vars: |
         terraform output -raw resource_group_id
+        terraform output -raw app_service_hostname
         echo ::set-output name=resource_group_id::"${rg_id}"
         echo ::set-output name=app_service_hostname::terraform output -raw app_service_hostname
     secrets:
