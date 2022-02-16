@@ -1,4 +1,4 @@
-name: 'Terraform'
+name: 'GitHub Workflows - Terraform Outputs Capture'
 
 on:
   workflow_call:

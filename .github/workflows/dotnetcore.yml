@@ -1,4 +1,4 @@
-name: eShopOnWeb Rich Code Navigation
+name: .NET Core Deployments
 
 on:
   workflow_call:

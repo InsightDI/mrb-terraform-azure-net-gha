@@ -1,9 +1,12 @@
-name: Simple CICD
+name: Deploy eShop Online
 
 on:
   push:
 
 jobs:
+
+  #####################
+  # Builds
   build-web:
     name: Build eShop Web
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/dotnetcore.yml@mrb/initial
@@ -18,6 +21,9 @@ jobs:
       artifact-name: PublicApi
       project-file: PublicApi.csproj
       project-path: app/src/PublicApi
+  
+  #####################
+  # Provision Infrastructure
   dev-provision-infra:
     name: Provision eShop Infrastructure - DEV
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
@@ -39,34 +45,31 @@ jobs:
         echo ::set-output name=eshop_web_service::$(terraform output -json eshop_web_service | tr -d '"')
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  
+  #####################
+  # Deploy Applications
   dev-deploy-web:
     needs: [dev-provision-infra-outputs, dev-provision-infra, build-web]
     name: Azure App Service Deploy - eShop Web - DEV
-    environment: dev
-    runs-on: ubuntu-latest
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/azurerm-deploy.yml@mrb/initial
+    with:
+      app-name: ${{ needs.dev-provision-infra-outputs.outputs.eshop_web_service }}
+      env: dev
+      package-name: Web.zip
 
-    steps:
-    - name: Download eShop Web Artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: Web
-
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    - run: ls -lR
-
-    - name: Azure App Service Deployment
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ needs.dev-provision-infra-outputs.outputs.eshop_web_service }}
-        package: Web.zip
-
-    - name: Azure Logout
-      run: az logout
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     # needs: dev-provision-infra-outputs
     # name: "Deploy eShop Web - DEV"
     # runs-on: ubuntu-latest

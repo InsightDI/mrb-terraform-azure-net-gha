@@ -1,0 +1,48 @@
+name: AzureRM Deployments
+
+on:
+  workflow_call:
+    inputs:
+      app-name:
+        required: true
+        description: AzureRM Resource Name
+        type: string
+      env:
+        required: true
+        type: string
+      package-name:
+        required: true
+        type: string
+        default: build.zip
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
+        description: Service Principal Credentials specified in https://docs.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=userlevel#generate-deployment-credentials
+
+jobs:
+  dev-appservice:
+    name: Azure App Service Deploy
+    environment: ${{ inputs.env }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: ${{ inputs.package-name }}
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - run: ls -lR
+
+    - name: Azure App Service Deployment
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ inputs.app-name }}
+        package: ${{ inputs.package-name }}
+
+    - name: Azure Logout
+      run: az logout
