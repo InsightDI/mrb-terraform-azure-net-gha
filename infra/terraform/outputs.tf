@@ -5,3 +5,7 @@ output "resource_group_id" {
 output "app_service_hostname" {
   value = azurerm_app_service.app.default_site_hostname
 }
+
+output "eshop_web_service" {
+  value = azurerm_app_service.app.name
+}

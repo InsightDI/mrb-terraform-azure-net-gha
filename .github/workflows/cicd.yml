@@ -4,30 +4,32 @@ on:
   push:
 
 jobs:
-  # build-api:
-  #   uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/dotnetcore.yml@mrb/initial
-  #   with:
-  #     artifact-name: Web
-  #     project-file: Web.csproj
-  #     project-path: app/src/Web
-  # build-web:
-  #   uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/dotnetcore.yml@mrb/initial
-  #   with:
-  #     artifact-name: PublicApi
-  #     project-file: PublicApi.csproj
-  #     project-path: app/src/PublicApi
-  # dev-provision-infra:
-  #   # needs: [build-api, build-web]
-  #   name: "Provision eShop Infrastructure - DEV"
-  #   uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
-  #   with:
-  #     env: dev
-  #     tf-path: infra/terraform
-  #   secrets:
-  #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  build-api:
+    name: Build eShop API
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/dotnetcore.yml@mrb/initial
+    with:
+      artifact-name: Web
+      project-file: Web.csproj
+      project-path: app/src/Web
+  build-web:
+    name: Build eShop Web
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/dotnetcore.yml@mrb/initial
+    with:
+      artifact-name: PublicApi
+      project-file: PublicApi.csproj
+      project-path: app/src/PublicApi
+  dev-provision-infra:
+    # needs: [build-api, build-web]
+    name: Provision eShop Infrastructure - DEV
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
+    with:
+      env: dev
+      tf-path: infra/terraform
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   dev-provision-infra-outputs:
-    # needs: dev-provision-infra
-    name: "Provision eShop Infrastructure [Outputs] - DEV"
+    needs: dev-provision-infra
+    name: Provision eShop Infrastructure [Outputs] - DEV
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform-outputs.yml@mrb/initial
     with:
       env: dev
@@ -35,16 +37,41 @@ jobs:
       output-vars: |
         echo ::set-output name=resource_group_id::$(terraform output -json resource_group_id)
         echo ::set-output name=app_service_hostname::$(terraform output -json app_service_hostname)
+        echo ::set-output name=eshop_web_service::$(terraform output -json eshop_web_service)
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   dev-deploy-web:
-    needs: dev-provision-infra-outputs
-    name: "Deploy eShop Web - DEV"
+    needs: [dev-provision-infra-outputs, dev-provision-infra]
+    name: Azure App Service Deploy - eShop Web - DEV
     runs-on: ubuntu-latest
+
     steps:
-    - run: |
-        echo ${{ needs.dev-provision-infra-outputs.outputs.resource_group_id }}
-        echo ${{ needs.dev-provision-infra-outputs.outputs.app_service_hostname }}
+    - name: Download eShop Web Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: Web
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Azure App Service Deployment
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ needs.dev-provision-infra-outputs.outputs.eshop_web_service}}
+        package: Web
+
+    - name: Azure Logout
+      run: az logout
+
+    # needs: dev-provision-infra-outputs
+    # name: "Deploy eShop Web - DEV"
+    # runs-on: ubuntu-latest
+    # steps:
+    # - run: |
+    #     echo ${{ needs.dev-provision-infra-outputs.outputs.resource_group_id }}
+    #     echo ${{ needs.dev-provision-infra-outputs.outputs.app_service_hostname }}
 #   deploy-test:
 #     needs: deploy-dev 
 #     uses: hca-ccoe/demo-tfc-workflow/.github/workflows/terraform.yml@development/update-workflows
@@ -66,3 +93,6 @@ jobs:
 #       env: prod
 #     secrets:
 #       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+
+
+# az ad sp create-for-rbac --name "github-sp-tf-demo" --role contributor --scopes "/subscriptions/1c6b2cdf-74c6-448e-b9c2-79db4106600b" --sdk-auth

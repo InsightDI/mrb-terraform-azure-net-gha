@@ -22,6 +22,9 @@ on:
       app_service_hostname:
         description: "Web app hostname"
         value: ${{ jobs.terraform-outputs.outputs.app_service_hostname }}
+      eshop_web_service:
+        description: "Web app service name"
+        value: ${{ jobs.terraform-outputs.outputs.eshop_web_service }}
 
 
 jobs:
@@ -37,6 +40,7 @@ jobs:
     outputs:
       resource_group_id: ${{ steps.tf_outputs.outputs.resource_group_id }}
       app_service_hostname: ${{ steps.tf_outputs.outputs.app_service_hostname }}
+      eshop_web_service: ${{ steps.tf_outputs.outputs.eshop_web_service }}
 
     steps:
     - name: Checkout
