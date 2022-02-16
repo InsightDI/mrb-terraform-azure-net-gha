@@ -55,7 +55,7 @@ jobs:
     with:
       app-name: ${{ needs.dev-provision-infra-outputs.outputs.eshop_web_service }}
       env: dev
-      package-name: Web.zip
+      package-name: Web
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
 

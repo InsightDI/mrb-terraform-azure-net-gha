@@ -42,7 +42,7 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ inputs.app-name }}
-        package: ${{ inputs.package-name }}
+        package: ${{ inputs.package-name }}.zip
 
     - name: Azure Logout
       run: az logout
