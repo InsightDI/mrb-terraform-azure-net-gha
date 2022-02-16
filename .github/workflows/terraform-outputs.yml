@@ -25,9 +25,9 @@ on:
       eshop_web_service:
         description: "Web app service name"
         value: ${{ jobs.terraform-outputs.outputs.eshop_web_service }}
-      eshop_api_service:
+      eshop_api:
         description: "API service name"
-        value: ${{ jobs.terraform-outputs.outputs.eshop_api_service }}
+        value: ${{ jobs.terraform-outputs.outputs.eshop_api }}
 
 
 jobs:
@@ -44,7 +44,7 @@ jobs:
       resource_group_id: ${{ steps.tf_outputs.outputs.resource_group_id }}
       app_service_hostname: ${{ steps.tf_outputs.outputs.app_service_hostname }}
       eshop_web_service: ${{ steps.tf_outputs.outputs.eshop_web_service }}
-      eshop_api_service: ${{ steps.tf_outputs.outputs.eshop_api_service }}
+      eshop_api: ${{ steps.tf_outputs.outputs.eshop_api }}
 
     steps:
     - name: Checkout

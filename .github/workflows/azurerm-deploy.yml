@@ -36,8 +36,6 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - run: ls -lR
-
     - name: Azure App Service Deployment
       uses: azure/webapps-deploy@v2
       with:
