@@ -35,8 +35,8 @@ jobs:
       output-vars: |
         terraform output -json resource_group_id
         terraform output -json app_service_hostname
-        # echo ::set-output name=resource_group_id::"${rg_id}"
-        # echo ::set-output name=app_service_hostname::terraform output -raw app_service_hostname
+        echo ::set-output name=resource_group_id::"${rg_id}"
+        echo ::set-output name=app_service_hostname::terraform output -raw app_service_hostname
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   dev-deploy-web:
