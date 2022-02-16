@@ -4,7 +4,7 @@ on:
   push:
 
 env:
-  output-vars: |
+  OUTPUT_VARS: |
     echo ::set-output name=resource_group_id::$(terraform output -raw resource_group_id)
     echo ::set-output name=app_service_hostname::$(terraform output -raw app_service_hostname)
 
@@ -37,7 +37,7 @@ jobs:
     with:
       env: dev
       tf-path: infra/terraform
-      output-vars: $output-vars
+      output-vars: $OUTPUT_VARS
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   dev-deploy-web:
