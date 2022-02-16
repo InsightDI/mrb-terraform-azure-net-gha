@@ -9,9 +9,6 @@ on:
       tf-path:
         required: true
         type: string
-      output-vars:
-        required: false
-        type: string
     secrets:
       TF_API_TOKEN:
         required: true

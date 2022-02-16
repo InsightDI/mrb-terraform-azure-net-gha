@@ -28,7 +28,6 @@ jobs:
     with:
       env: dev
       tf-path: infra/terraform
-      output-vars: ${{ env.output-vars }}
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   dev-provision-infra-outputs:
@@ -38,7 +37,7 @@ jobs:
     with:
       env: dev
       tf-path: infra/terraform
-      output-vars: ${{ env.output-vars }}
+      output-vars: $output-vars
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   dev-deploy-web:
