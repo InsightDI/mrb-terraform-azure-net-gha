@@ -24,7 +24,7 @@ on:
 
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'Terraform Provisioning'
     runs-on: ubuntu-latest
     environment: ${{ inputs.env }}
 
