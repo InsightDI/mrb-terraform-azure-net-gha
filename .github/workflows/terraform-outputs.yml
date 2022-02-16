@@ -55,8 +55,3 @@ jobs:
       id: tf_outputs
       run: ${{ inputs.output-vars }}
       working-directory: ${{ inputs.tf-path }}
-
-    - run: |
-        terraform output -json resource_group_id
-        terraform output -json app_service_hostname
-      working-directory: ${{ inputs.tf-path }}
