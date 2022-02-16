@@ -7,5 +7,9 @@ output "app_service_hostname" {
 }
 
 output "eshop_web_service" {
-  value = azurerm_app_service.app.name
+  value = azurerm_app_service.app[web].name
+}
+
+output "eshop_api_service" {
+  value = azurerm_app_service.app[api].name
 }
