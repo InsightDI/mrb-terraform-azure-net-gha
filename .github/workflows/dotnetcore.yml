@@ -36,9 +36,12 @@ jobs:
     - name: Publish 
       run: dotnet publish ${{ inputs.project-path }}/${{ inputs.project-file }} -c Release -o Build
 
+    - name: Archive Artifact
+      run: zip Web.zip Build/**
+
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.2
       with:
         name: ${{ inputs.artifact-name }}
-        path: Build/**
+        path: '*.zip'
         if-no-files-found: error
