@@ -55,7 +55,5 @@ jobs:
 
     - name: Terraform Outputs
       id: tf_outputs
-      run: |
-        terraform output -json
-        ${{ inputs.output-vars }}
+      run: ${{ inputs.output-vars }}
       working-directory: ${{ inputs.tf-path }}
