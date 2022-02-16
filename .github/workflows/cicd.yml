@@ -32,7 +32,7 @@ jobs:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   dev-provision-infra-outputs:
     needs: dev-provision-infra
-    name: "Provision eShop Infrastructure - DEV"
+    name: "Provision eShop Infrastructure [Outputs] - DEV"
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform-outputs.yml@mrb/initial
     with:
       env: dev

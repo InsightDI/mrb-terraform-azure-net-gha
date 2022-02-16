@@ -26,7 +26,7 @@ on:
 
 jobs:
   terraform-outputs:
-    name: 'Terraform Provisioning'
+    name: 'Terraform Provisioning - Outputs'
     runs-on: ubuntu-latest
     environment: ${{ inputs.env }}
 
