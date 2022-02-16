@@ -16,17 +16,17 @@ jobs:
   #     artifact-name: PublicApi
   #     project-file: PublicApi.csproj
   #     project-path: app/src/PublicApi
-  dev-provision-infra:
-    # needs: [build-api, build-web]
-    name: "Provision eShop Infrastructure - DEV"
-    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
-    with:
-      env: dev
-      tf-path: infra/terraform
-    secrets:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  # dev-provision-infra:
+  #   # needs: [build-api, build-web]
+  #   name: "Provision eShop Infrastructure - DEV"
+  #   uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
+  #   with:
+  #     env: dev
+  #     tf-path: infra/terraform
+  #   secrets:
+  #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   dev-provision-infra-outputs:
-    needs: dev-provision-infra
+    # needs: dev-provision-infra
     name: "Provision eShop Infrastructure [Outputs] - DEV"
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform-outputs.yml@mrb/initial
     with:
