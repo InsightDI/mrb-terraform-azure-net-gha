@@ -9,9 +9,18 @@ on:
       tf-path:
         required: true
         type: string
+      output-vars:
+        required: false
+        type: string
     secrets:
       TF_API_TOKEN:
         required: true
+    # outputs:
+    #   resource_group_id:
+    #     description: "Resource group Id"
+    #     value: ${{ jobs.terraform.outputs.resource_group_id }}
+    #   app_service_hostname:
+    #     description: "Web app hostname"
 
 jobs:
   terraform:
@@ -59,13 +68,12 @@ jobs:
       working-directory: ${{ inputs.tf-path }}
 
     - name: Terraform Outputs
+      id: tf_outputs
       run: |
         terraform output -json
-        echo ::set-output name=resource_group_id::$(terraform output -raw resource_group_id)
-        echo ::set-output name=app_service_hostname::$(terraform output -raw app_service_hostname)
-        # $outputs = terraform output -json
-        # Write-Host $outputs
-        # $outputsJson = $outputs | ConvertFrom-Json
-        # Write-Host $outputsJson
-      # shell: pwsh
+        ${{ inputs.output-vars }}
       working-directory: ${{ inputs.tf-path }}
+
+    outputs:
+      resource_group_id: ${{ steps.tf_outputs.outputs.resource_group_id }}
+      app_service_hostname: ${{ steps.tf_outputs.outputs.app_service_hostname }}
