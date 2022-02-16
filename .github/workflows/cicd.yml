@@ -3,6 +3,11 @@ name: Simple CICD
 on:
   push:
 
+env:
+  output-vars: |
+        echo ::set-output name=resource_group_id::$(terraform output -raw resource_group_id)
+        echo ::set-output name=app_service_hostname::$(terraform output -raw app_service_hostname)
+
 jobs:
   # build-api:
   #   uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/dotnetcore.yml@mrb/initial
@@ -16,26 +21,34 @@ jobs:
   #     artifact-name: PublicApi
   #     project-file: PublicApi.csproj
   #     project-path: app/src/PublicApi
-  deploy-dev:
+  dev-provision-infra:
     # needs: [build-api, build-web]
+    name: "Provision eShop Infrastructure - DEV"
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
     with:
       env: dev
       tf-path: infra/terraform
-      output-vars: |
-        echo ::set-output name=resource_group_id::$(terraform output -raw resource_group_id)
-        echo ::set-output name=app_service_hostname::$(terraform output -raw app_service_hostname)
+      output-vars: ${{ env.output-vars }}
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-  deploy-dev-web:
-    name: "Deploy Web - DEV"
+  dev-provision-infra-outputs:
+    needs: dev-provision-infra
+    name: "Provision eShop Infrastructure - DEV"
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
+    with:
+      env: dev
+      tf-path: infra/terraform
+      output-vars: ${{ env.output-vars }}
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  dev-deploy-web:
+    needs: dev-provision-infra-outputs
+    name: "Deploy eShop Web - DEV"
     runs-on: ubuntu-latest
-    needs: deploy-dev
-    
     steps:
     - run: |
-        echo ${{ needs.deploy-dev.outputs.resource_group_id }}
-        echo ${{ needs.deploy-dev.outputs.app_service_hostname }}
+        echo ${{ needs.dev-provision-infra.outputs.resource_group_id }}
+        echo ${{ needs.dev-provision-infra.outputs.app_service_hostname }}
 #   deploy-test:
 #     needs: deploy-dev 
 #     uses: hca-ccoe/demo-tfc-workflow/.github/workflows/terraform.yml@development/update-workflows

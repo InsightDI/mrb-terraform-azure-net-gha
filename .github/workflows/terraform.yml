@@ -66,14 +66,3 @@ jobs:
       # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve
       working-directory: ${{ inputs.tf-path }}
-
-    - name: Terraform Outputs
-      id: tf_outputs
-      run: |
-        terraform output -json
-        ${{ inputs.output-vars }}
-      working-directory: ${{ inputs.tf-path }}
-
-    outputs:
-      resource_group_id: ${{ steps.tf_outputs.outputs.resource_group_id }}
-      app_service_hostname: ${{ steps.tf_outputs.outputs.app_service_hostname }}

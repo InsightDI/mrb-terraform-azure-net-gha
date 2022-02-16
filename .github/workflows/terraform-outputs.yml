@@ -1,0 +1,42 @@
+name: 'Terraform'
+
+on:
+  workflow_call:
+    inputs:
+      env:
+        required: true
+        type: string
+      tf-path:
+        required: true
+        type: string
+      output-vars:
+        required: false
+        type: string
+    secrets:
+      TF_API_TOKEN:
+        required: true
+    outputs:
+      resource_group_id:
+        description: "Resource group Id"
+        value: ${{ jobs.terraform.outputs.resource_group_id }}
+      app_service_hostname:
+        description: "Web app hostname"
+        value: ${{ jobs.terraform.outputs.app_service_hostname }}
+
+
+jobs:
+  terraform:
+    name: 'Terraform Provisioning'
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env }}
+
+    - name: Terraform Outputs
+      id: tf_outputs
+      run: |
+        terraform output -json
+        ${{ inputs.output-vars }}
+      working-directory: ${{ inputs.tf-path }}
+
+    outputs:
+      resource_group_id: ${{ steps.tf_outputs.outputs.resource_group_id }}
+      app_service_hostname: ${{ steps.tf_outputs.outputs.app_service_hostname }}
