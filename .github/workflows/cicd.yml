@@ -3,6 +3,11 @@ name: Simple CICD
 on:
   push:
 
+env:
+  OUTPUT_VARS: |
+    echo ::set-output name=resource_group_id::$(terraform output -json resource_group_id)
+    echo ::set-output name=app_service_hostname::$(terraform output -json app_service_hostname)
+
 jobs:
   # build-api:
   #   uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/dotnetcore.yml@mrb/initial
@@ -32,9 +37,7 @@ jobs:
     with:
       env: dev
       tf-path: infra/terraform
-      output-vars: |
-        echo ::set-output name=resource_group_id::$(terraform output -json resource_group_id)
-        echo ::set-output name=app_service_hostname::$(terraform output -json app_service_hostname)
+      output-vars: $OUTPUT_VARS
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   dev-deploy-web:
