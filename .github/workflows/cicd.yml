@@ -46,8 +46,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo ${{ needs.dev-provision-infra-outputs.outputs.resource_group_id }}
-        echo ${{ needs.dev-provision-infra-outputs.outputs.app_service_hostname }}
+        echo "${{ needs.dev-provision-infra-outputs.outputs.resource_group_id }}"
+        echo "${{ needs.dev-provision-infra-outputs.outputs.app_service_hostname }}"
 #   deploy-test:
 #     needs: deploy-dev 
 #     uses: hca-ccoe/demo-tfc-workflow/.github/workflows/terraform.yml@development/update-workflows
