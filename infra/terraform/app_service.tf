@@ -2,7 +2,7 @@ resource "random_id" "id" {
   byte_length = 3
 }
 
-locals { 
+locals {
   apps = {
     web = {
       name = "demo-web-${random_id.id.hex}"
@@ -25,7 +25,7 @@ resource "azurerm_app_service_plan" "asp" {
 }
 
 resource "azurerm_app_service" "app" {
-  forfor_each = local.apps
+  for_each            = local.apps
   name                = each.value.name
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
