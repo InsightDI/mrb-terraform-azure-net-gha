@@ -51,12 +51,12 @@ jobs:
       with:
         name: Web
 
-    - run: az version
-
     - name: Azure Login
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - run: ls -lR
 
     - name: Azure App Service Deployment
       uses: azure/webapps-deploy@v2
