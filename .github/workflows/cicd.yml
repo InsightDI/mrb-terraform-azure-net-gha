@@ -4,14 +4,14 @@ on:
   push:
 
 jobs:
-  build-api:
+  build-web:
     name: Build eShop Web
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/dotnetcore.yml@mrb/initial
     with:
       artifact-name: Web
       project-file: Web.csproj
       project-path: app/src/Web
-  build-web:
+  build-api:
     name: Build eShop API
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/dotnetcore.yml@mrb/initial
     with:
