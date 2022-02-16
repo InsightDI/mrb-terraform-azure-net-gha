@@ -34,9 +34,9 @@ jobs:
       env: dev
       tf-path: infra/terraform
       output-vars: |
-        echo ::set-output name=resource_group_id::$(terraform output -json resource_group_id)
-        echo ::set-output name=app_service_hostname::$(terraform output -json app_service_hostname)
-        echo ::set-output name=eshop_web_service::$(terraform output -json eshop_web_service)
+        echo ::set-output name=resource_group_id::$(trim(terraform output -json resource_group_id))
+        echo ::set-output name=app_service_hostname::$(trim(terraform output -json app_service_hostname))
+        echo ::set-output name=eshop_web_service::$(trim(terraform output -json eshop_web_service))
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   dev-deploy-web:
@@ -61,7 +61,7 @@ jobs:
     - name: Azure App Service Deployment
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ${{ needs.dev-provision-infra-outputs.outputs.eshop_web_service}}
+        app-name: ${{ needs.dev-provision-infra-outputs.outputs.eshop_web_service }}
         package: Web
 
     - name: Azure Logout
