@@ -42,7 +42,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - run: echo ${{ inputs.output-vars }}
+    # - run: echo ${{ inputs.output-vars }}
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
