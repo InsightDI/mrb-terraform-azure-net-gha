@@ -34,10 +34,12 @@ jobs:
       run: dotnet test ${{ inputs.project-path }}/${{ inputs.project-file }} -c Release
 
     - name: Publish 
-      run: dotnet publish ${{ inputs.project-path }}/${{ inputs.project-file }} -c Release -o Build
+      run: dotnet publish ${{ inputs.project-path }}/${{ inputs.project-file }} -c Release -o build
 
     - name: Archive Artifact
-      run: zip Web.zip Build/**
+      run: |
+        cd build
+        zip Web.zip **
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.2
