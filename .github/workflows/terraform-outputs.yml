@@ -61,3 +61,4 @@ jobs:
     - run: |
         terraform output -raw resource_group_id
         terraform output -raw app_service_hostname
+      working-directory: ${{ inputs.tf-path }}
