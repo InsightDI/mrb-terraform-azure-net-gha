@@ -25,11 +25,12 @@ on:
 
 
 jobs:
-  terraform:
+  terraform-outputs:
     name: 'Terraform Provisioning'
     runs-on: ubuntu-latest
     environment: ${{ inputs.env }}
 
+    steps:
     - name: Terraform Outputs
       id: tf_outputs
       run: |
