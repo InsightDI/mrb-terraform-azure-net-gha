@@ -61,8 +61,8 @@ jobs:
     - name: Terraform Outputs
       run: |
         terraform output -json
-        terraform output -raw resource_group_id 
-        terraform output -raw app_service_hostname
+        echo ::set-output name=resource_group_id::$(terraform output -raw resource_group_id)
+        echo ::set-output name=app_service_hostname::$(terraform output -raw app_service_hostname)
         # $outputs = terraform output -json
         # Write-Host $outputs
         # $outputsJson = $outputs | ConvertFrom-Json
