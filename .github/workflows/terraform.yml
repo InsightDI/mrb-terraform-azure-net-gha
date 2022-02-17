@@ -57,6 +57,8 @@ jobs:
 
   terraform:
     name: 'Terraform Provisioning'
+    if: ${{ always() }}
+    needs: tf-lint
     runs-on: ubuntu-latest
     environment: ${{ inputs.env }}
 
