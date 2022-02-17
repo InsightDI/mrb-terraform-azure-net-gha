@@ -23,9 +23,17 @@ jobs:
       run:
         shell: bash
 
+
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+
+    - name: Replace Tokens - providers.tf
+      uses: cschleiden/replace-tokens@v1
+      with:
+        files: '["infra/terraform/providers.tf"]'
+      env:
+        environment: ${{ inputs.env }}
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
