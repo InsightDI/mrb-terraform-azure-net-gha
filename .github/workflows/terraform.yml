@@ -41,6 +41,7 @@ jobs:
         shell: bash
 
     steps:
+      - run: cd ${{ inputs.tf-path }}
       - name: Setup TF Lint
         uses: terraform-linters/setup-tflint@v1
         with:
