@@ -44,21 +44,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - run: cd ${{ inputs.tf-path }}
-
       - name: Setup TF Lint
         uses: terraform-linters/setup-tflint@v1
         with:
           tflint_version: latest
 
-      - run: tflint --version
-
       - name: Init TFLint
-        run: tflint --init
+        run: tflint --init --loglevel=trace ${{ inputs.tf-path }} 
         # ${{ inputs.tf-path }}
 
       - name: Run TFLint
-        run: tflint --var="environment=${{ inputs.env }}" -f json --loglevel=trace
+        run: tflint --var="environment=${{ inputs.env }}" -f json --loglevel=trace ${{ inputs.tf-path }} 
         # ${{ inputs.tf-path }}
 
 
