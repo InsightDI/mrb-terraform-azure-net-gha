@@ -34,15 +34,6 @@ jobs:
     with:
       env: dev
       tf-path: infra/terraform
-    secrets:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-  dev-provision-infra-outputs:
-    needs: dev-provision-infra
-    name: Provision eShop Infrastructure [Outputs] - DEV
-    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform-outputs.yml@mrb/initial
-    with:
-      env: dev
-      tf-path: infra/terraform
       output-vars: |
         echo ::set-output name=resource_group_id::$(terraform output -json resource_group_id | tr -d '"')
         echo ::set-output name=app_service_hostname::$(terraform output -json app_service_hostname | tr -d '"')
@@ -50,11 +41,26 @@ jobs:
         echo ::set-output name=eshop_api::$(terraform output -json eshop_api | tr -d '"')
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  # dev-provision-infra-outputs:
+  #   needs: dev-provision-infra
+  #   name: Provision eShop Infrastructure [Outputs] - DEV
+  #   uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform-outputs.yml@mrb/initial
+  #   with:
+  #     env: dev
+  #     tf-path: infra/terraform
+  #     output-vars: |
+  #       echo ::set-output name=resource_group_id::$(terraform output -json resource_group_id | tr -d '"')
+  #       echo ::set-output name=app_service_hostname::$(terraform output -json app_service_hostname | tr -d '"')
+  #       echo ::set-output name=eshop_web_service::$(terraform output -json eshop_web_service | tr -d '"')
+  #       echo ::set-output name=eshop_api::$(terraform output -json eshop_api | tr -d '"')
+  #   secrets:
+  #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   
   #####################
   # Deploy Applications
   dev-deploy-web:
-    needs: [dev-provision-infra-outputs, dev-provision-infra, build-web]
+    # needs: [dev-provision-infra-outputs, dev-provision-infra, build-web]
+    needs: [dev-provision-infra, build-web]
     name: Azure App Service Deploy - eShop Web - DEV
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/azurerm-deploy.yml@mrb/initial
     with:
