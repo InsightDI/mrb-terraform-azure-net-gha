@@ -41,7 +41,9 @@ jobs:
         shell: bash
 
     steps:
-      - run: cd ${{ inputs.tf-path }}
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Setup TF Lint
         uses: terraform-linters/setup-tflint@v1
         with:
@@ -50,11 +52,11 @@ jobs:
       - run: tflint --version
 
       - name: Init TFLint
-        run: tflint --init /${{ inputs.tf-path }}
+        run: tflint --init ${{ inputs.tf-path }}
         # working-directory: ${{ inputs.tf-path }}
 
       - name: Run TFLint
-        run: tflint -f compact /${{ inputs.tf-path }}
+        run: tflint -f compact ${{ inputs.tf-path }}
         # working-directory: ${{ inputs.tf-path }}
 
 
