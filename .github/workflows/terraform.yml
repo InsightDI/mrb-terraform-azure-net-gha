@@ -23,7 +23,6 @@ jobs:
       run:
         shell: bash
 
-
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -50,10 +49,10 @@ jobs:
       working-directory: ${{ inputs.tf-path }}
 
     - name: Terraform Plan
-      run: terraform plan -var "environment=${{ inputs.env }}"
+      run: terraform plan -var "environment=${{ inputs.env }}" -out terraform.tfplan
       working-directory: ${{ inputs.tf-path }}
 
     - name: Terraform Apply
       # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -auto-approve
-      working-directory: ${{ inputs.tf-path }}
+      run: terraform apply terraform.tfplan --auto-approve
+      working-directory: ${{ inputs.tf-path }} 
