@@ -50,11 +50,11 @@ jobs:
           tflint_version: latest
 
       - name: Init TFLint
-        run: tflint --init --loglevel=trace
+        run: tflint --init
         working-directory: ${{ inputs.tf-path }}
 
       - name: Run TFLint
-        run: tflint --var="environment=${{ inputs.env }}" -f json --loglevel=trace
+        run: tflint --var="environment=${{ inputs.env }}" -f json
         working-directory: ${{ inputs.tf-path }}
 
 
