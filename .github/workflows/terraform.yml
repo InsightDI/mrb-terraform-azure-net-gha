@@ -54,11 +54,11 @@ jobs:
       - run: tflint --version
 
       - name: Init TFLint
-        run: tflint --init 
+        run: tflint --init --var"environment=${{ inputs.env }}"
         # ${{ inputs.tf-path }}
 
       - name: Run TFLint
-        run: tflint -f compact 
+        run: tflint -f compact --var"environment=${{ inputs.env }}"
         # ${{ inputs.tf-path }}
 
 
