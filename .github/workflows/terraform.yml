@@ -30,6 +30,31 @@ on:
         value: ${{ jobs.terraform-outputs.outputs.eshop_api }}
 
 jobs:
+  tf-lint:
+    name: 'TF Lint'
+    if: ${{ inputs.env }} == dev
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env }}
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Setup TF Lint
+        uses: terraform-linters/setup-tflint@v1
+        with:
+          tflint_version: v0.34.1
+
+      - name: Init TFLint
+        run: tflint --init
+        working-directory: ${{ inputs.tf-path }}
+
+      - name: Run TFLint
+        run: tflint -f compact
+        working-directory: ${{ inputs.tf-path }}
+
+
   terraform:
     name: 'Terraform Provisioning'
     runs-on: ubuntu-latest
