@@ -31,7 +31,7 @@ jobs:
       with:
         files: '["infra/terraform/providers.tf"]'
       env:
-        environment: ${{ inputs.env }}
+        environment: dev
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -67,7 +67,7 @@ jobs:
       with:
         files: '["infra/terraform/providers.tf"]'
       env:
-        environment: ${{ inputs.env }}
+        environment: test
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -103,7 +103,7 @@ jobs:
       with:
         files: '["infra/terraform/providers.tf"]'
       env:
-        environment: ${{ inputs.env }}
+        environment: staging
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -139,7 +139,7 @@ jobs:
       with:
         files: '["infra/terraform/providers.tf"]'
       env:
-        environment: ${{ inputs.env }}
+        environment: prod
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
