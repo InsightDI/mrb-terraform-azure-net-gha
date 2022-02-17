@@ -70,7 +70,8 @@ jobs:
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   dev-deploy-api:
-    needs: [dev-provision-infra-outputs, dev-provision-infra, build-api]
+    # needs: [dev-provision-infra-outputs, dev-provision-infra, build-web]
+    needs: [dev-provision-infra, build-web]
     name: Azure App Service Deploy - eShop API - DEV
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/azurerm-deploy.yml@mrb/initial
     with:
