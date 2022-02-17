@@ -50,7 +50,7 @@ jobs:
 
       - name: Init TFLint
         run: tflint --init
-        working-directory: ${{ inputs.tf-path }}
+        # working-directory: ${{ inputs.tf-path }}
 
       - name: Run TFLint
         run: tflint -f compact
