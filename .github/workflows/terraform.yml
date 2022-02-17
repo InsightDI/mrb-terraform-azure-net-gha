@@ -54,11 +54,11 @@ jobs:
       - run: tflint --version
 
       - name: Init TFLint
-        run: tflint --init --var "environment=${{ inputs.env }}"
+        run: tflint --init
         # ${{ inputs.tf-path }}
 
       - name: Run TFLint
-        run: tflint -f compact --var "environment=${{ inputs.env }}"
+        run: tflint --var="environment=${{ inputs.env }}" -f json --loglevel=trace
         # ${{ inputs.tf-path }}
 
 
