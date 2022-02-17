@@ -81,7 +81,7 @@ jobs:
   #####################
   # Provision Infrastructure
   test-provision-infra:
-    name: Provision eShop Infrastructure - DEV
+    name: Provision eShop Infrastructure - TEST
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
     with:
       env: test
@@ -90,7 +90,7 @@ jobs:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   test-provision-infra-outputs:
     needs: test-provision-infra
-    name: Provision eShop Infrastructure [Outputs] - DEV
+    name: Provision eShop Infrastructure [Outputs] - TEST
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform-outputs.yml@mrb/initial
     with:
       env: test
