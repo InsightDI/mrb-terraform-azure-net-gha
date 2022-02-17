@@ -10,7 +10,7 @@ terraform {
     organization = "mbraunwart-test"
 
     workspaces {
-      name = "tf-demo-#{var.environment}#"
+      name = "tf-demo-#{environment}#"
     }
   }
 }
