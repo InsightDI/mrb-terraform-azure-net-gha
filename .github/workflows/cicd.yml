@@ -64,7 +64,7 @@ jobs:
     name: Azure App Service Deploy - eShop Web - DEV
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/azurerm-deploy.yml@mrb/initial
     with:
-      app-name: ${{ needs.dev-provision-infra-outputs.outputs.eshop_web_service }}
+      app-name: ${{ needs.dev-provision-infra.outputs.eshop_web_service }}
       env: dev
       package-name: Web
     secrets:
@@ -75,7 +75,7 @@ jobs:
     name: Azure App Service Deploy - eShop API - DEV
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/azurerm-deploy.yml@mrb/initial
     with:
-      app-name: ${{ needs.dev-provision-infra-outputs.outputs.eshop_api }}
+      app-name: ${{ needs.dev-provision-infra.outputs.eshop_api }}
       env: dev
       package-name: PublicApi
     secrets:
