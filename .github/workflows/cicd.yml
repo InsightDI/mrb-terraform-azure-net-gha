@@ -127,10 +127,110 @@ jobs:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
 
     
+  #####################
+  # STAGING STAGE
+  #####################
+
+  #####################
+  # Provision Infrastructure
+  staging-provision-infra:
+    name: Provision eShop Infrastructure - STAGING
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
+    with:
+      env: staging
+      tf-path: infra/terraform
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  staging-provision-infra-outputs:
+    needs: staging-provision-infra
+    name: Provision eShop Infrastructure [Outputs] - STAGING
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform-outputs.yml@mrb/initial
+    with:
+      env: staging
+      tf-path: infra/terraform
+      output-vars: |
+        echo ::set-output name=resource_group_id::$(terraform output -json resource_group_id | tr -d '"')
+        echo ::set-output name=app_service_hostname::$(terraform output -json app_service_hostname | tr -d '"')
+        echo ::set-output name=eshop_web_service::$(terraform output -json eshop_web_service | tr -d '"')
+        echo ::set-output name=eshop_api::$(terraform output -json eshop_api | tr -d '"')
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  
+  #####################
+  # Deploy Applications
+  staging-deploy-web:
+    needs: [staging-provision-infra-outputs, staging-provision-infra, build-web]
+    name: Azure App Service Deploy - eShop Web - STAGING
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/azurerm-deploy.yml@mrb/initial
+    with:
+      app-name: ${{ needs.staging-provision-infra-outputs.outputs.eshop_web_service }}
+      env: staging
+      package-name: Web
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  staging-deploy-api:
+    needs: [staging-provision-infra-outputs, staging-provision-infra, build-api]
+    name: Azure App Service Deploy - eShop API - STAGING
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/azurerm-deploy.yml@mrb/initial
+    with:
+      app-name: ${{ needs.staging-provision-infra-outputs.outputs.eshop_api }}
+      env: staging
+      package-name: PublicApi
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     
     
-    
-    
+  #####################
+  # PROD STAGE
+  #####################
+
+  #####################
+  # Provision Infrastructure
+  prod-provision-infra:
+    name: Provision eShop Infrastructure - PROD
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
+    with:
+      env: prod
+      tf-path: infra/terraform
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  prod-provision-infra-outputs:
+    needs: prod-provision-infra
+    name: Provision eShop Infrastructure [Outputs] - PROD
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform-outputs.yml@mrb/initial
+    with:
+      env: prod
+      tf-path: infra/terraform
+      output-vars: |
+        echo ::set-output name=resource_group_id::$(terraform output -json resource_group_id | tr -d '"')
+        echo ::set-output name=app_service_hostname::$(terraform output -json app_service_hostname | tr -d '"')
+        echo ::set-output name=eshop_web_service::$(terraform output -json eshop_web_service | tr -d '"')
+        echo ::set-output name=eshop_api::$(terraform output -json eshop_api | tr -d '"')
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  
+  #####################
+  # Deploy Applications
+  prod-deploy-web:
+    needs: [prod-provision-infra-outputs, prod-provision-infra, build-web]
+    name: Azure App Service Deploy - eShop Web - PROD
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/azurerm-deploy.yml@mrb/initial
+    with:
+      app-name: ${{ needs.prod-provision-infra-outputs.outputs.eshop_web_service }}
+      env: prod
+      package-name: Web
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  prod-deploy-api:
+    needs: [prod-provision-infra-outputs, prod-provision-infra, build-api]
+    name: Azure App Service Deploy - eShop API - PROD
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/azurerm-deploy.yml@mrb/initial
+    with:
+      app-name: ${{ needs.prod-provision-infra-outputs.outputs.eshop_api }}
+      env: prod
+      package-name: PublicApi
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}    
     
     
     
