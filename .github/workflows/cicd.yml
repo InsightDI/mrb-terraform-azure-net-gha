@@ -81,6 +81,7 @@ jobs:
   #####################
   # Provision Infrastructure
   test-provision-infra:
+    needs: [dev-deploy-web, dev-deploy-api]
     name: Provision eShop Infrastructure - TEST
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
     with:
@@ -134,6 +135,7 @@ jobs:
   #####################
   # Provision Infrastructure
   staging-provision-infra:
+    needs: [test-deploy-web, test-deploy-api]
     name: Provision eShop Infrastructure - STAGING
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
     with:
@@ -187,6 +189,7 @@ jobs:
   #####################
   # Provision Infrastructure
   prod-provision-infra:
+    needs: [staging-deploy-web, staging-deploy-api]
     name: Provision eShop Infrastructure - PROD
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
     with:
