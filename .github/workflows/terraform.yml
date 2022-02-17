@@ -49,10 +49,10 @@ jobs:
       working-directory: ${{ inputs.tf-path }}
 
     - name: Terraform Plan
-      run: terraform plan -var "environment=${{ inputs.env }}" -out terraform.tfplan
+      run: terraform plan -var "environment=${{ inputs.env }}"
       working-directory: ${{ inputs.tf-path }}
 
     - name: Terraform Apply
       # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply terraform.tfplan --auto-approve
+      run: terraform apply -auto-approve
       working-directory: ${{ inputs.tf-path }} 
