@@ -23,6 +23,7 @@ jobs:
         with:
           env: dev
           tf-path: infra/terraform
+          TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
 
 
