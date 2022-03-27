@@ -30,17 +30,10 @@ runs:
 
     - name: Terraform Format
       run: terraform fmt -check
-      continue-on-error: true
-      working-directory: ${{ inputs.tf-path }}
-      shell: bash
-
-    - name: Terraform Plan
-      run: terraform plan -var "environment=${{ inputs.env }}"
       working-directory: ${{ inputs.tf-path }}
       shell: bash
 
     - name: Terraform Apply
-      # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -var "environment=${{ inputs.env }}" -auto-approve
       working-directory: ${{ inputs.tf-path }} 
       shell: bash

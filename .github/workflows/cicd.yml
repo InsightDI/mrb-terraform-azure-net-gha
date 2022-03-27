@@ -16,9 +16,10 @@ jobs:
         with:
           env: dev
           tf-path: infra/terraform
+        continue-on-error: true
       - id: terraform
         name: Terraform Provisioning
-        uses: ./.github/actions/terraform
+        uses: ./.github/actions/terraform-apply
         with:
           env: dev
           tf-path: infra/terraform
