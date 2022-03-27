@@ -21,6 +21,11 @@ jobs:
           env: dev
           tf-path: infra/terraform
         continue-on-error: true
+      - id: terraform
+        uses: ./.github/actions/terraform
+        with:
+          env: dev
+          tf-path: infra/terraform
 
 
 
