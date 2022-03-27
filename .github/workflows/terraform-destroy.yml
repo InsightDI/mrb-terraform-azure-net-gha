@@ -11,10 +11,17 @@ on:
         required: true
 
 jobs:
-  dev-terraform-destroy:
+  terraform-destroy:
     name: 'Terraform Deprovisioning'
     runs-on: ubuntu-latest
     environment: dev
+    strategy:
+      matrix:
+        env:
+          - dev
+          - test
+          - staging
+          - prod
 
     defaults:
       run:
@@ -31,7 +38,7 @@ jobs:
       with:
         files: '["infra/terraform/providers.tf"]'
       env:
-        environment: dev
+        environment: ${{ matrix.env }}
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -44,113 +51,5 @@ jobs:
 
     - name: Terraform Destroy
       # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform destroy -var "environment=dev" -auto-approve
-      working-directory: ${{ inputs.tf-path }} 
-
-  test-terraform-destroy:
-    name: 'Terraform Deprovisioning'
-    runs-on: ubuntu-latest
-    environment: test
-
-    defaults:
-      run:
-        shell: bash
-
-    steps:
-    - run: sleep 5m
-    
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Replace Tokens - providers.tf
-      uses: cschleiden/replace-tokens@v1
-      with:
-        files: '["infra/terraform/providers.tf"]'
-      env:
-        environment: test
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    - name: Terraform Init
-      run: terraform init
-      working-directory: ${{ inputs.tf-path }}
-
-    - name: Terraform Destroy
-      # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform destroy -var "environment=test" -auto-approve
-      working-directory: ${{ inputs.tf-path }} 
-
-  staging-terraform-destroy:
-    name: 'Terraform Deprovisioning'
-    runs-on: ubuntu-latest
-    environment: staging
-
-    defaults:
-      run:
-        shell: bash
-
-    steps:
-    - run: sleep 5m
-    
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Replace Tokens - providers.tf
-      uses: cschleiden/replace-tokens@v1
-      with:
-        files: '["infra/terraform/providers.tf"]'
-      env:
-        environment: staging
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    - name: Terraform Init
-      run: terraform init
-      working-directory: ${{ inputs.tf-path }}
-
-    - name: Terraform Destroy
-      # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform destroy -var "environment=staging" -auto-approve
-      working-directory: ${{ inputs.tf-path }} 
-
-  prod-terraform-destroy:
-    name: 'Terraform Deprovisioning'
-    runs-on: ubuntu-latest
-    environment: prod
-
-    defaults:
-      run:
-        shell: bash
-
-    steps:
-    - run: sleep 5m
-    
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Replace Tokens - providers.tf
-      uses: cschleiden/replace-tokens@v1
-      with:
-        files: '["infra/terraform/providers.tf"]'
-      env:
-        environment: prod
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    - name: Terraform Init
-      run: terraform init
-      working-directory: ${{ inputs.tf-path }}
-
-    - name: Terraform Destroy
-      # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform destroy -var "environment=prod" -auto-approve
+      run: terraform destroy -var "environment=${{ matrix.env }}" -auto-approve
       working-directory: ${{ inputs.tf-path }} 

@@ -3,11 +3,9 @@ name: 'Terraform Provisioning'
 on:
   workflow_call:
     inputs:
-      tf-lint:
-        required: false
+      env:
+        required: true
         type: string
-        description: Environments to run tf-lint against
-        default: '{"env":["dev"]}'
       tf-path:
         required: true
         type: string
@@ -34,14 +32,10 @@ on:
 jobs:
   tf-lint:
     name: 'TF Lint'
+    if: ${{ inputs.env == 'dev' }}
     runs-on: ubuntu-latest
-    environment: 
-      name: ${{ matrix.env }}
+    environment: ${{ inputs.env }}
     continue-on-error: true
-    strategy:
-      matrix: ${{ fromJson(inputs.tf-lint) }}
-    outputs: 
-      env: ${{ matrix.env }}
 
     defaults:
       run:
@@ -61,26 +55,16 @@ jobs:
         working-directory: ${{ inputs.tf-path }}
 
       - name: Run TFLint
-        run: tflint --var="environment=${{ matrix.env }}" -f json
-        working-directory: ${{ matrix.tf-path }}
+        run: tflint --var="environment=${{ inputs.env }}" -f json
+        working-directory: ${{ inputs.tf-path }}
 
 
   terraform:
     name: 'Terraform Provisioning'
-    if: ${{ contains( fromJson(inputs.tf-lint), needs.tf-lint.outputs.env) || always() }}
+    if: ${{ always() }}
     needs: tf-lint
     runs-on: ubuntu-latest
-    environment: 
-      name: ${{ matrix.env }}
-    strategy:
-      matrix:
-        env:
-          - dev
-          - test
-          - staging
-          - prod
-    outputs: 
-      env: ${{ matrix.env }}
+    environment: ${{ inputs.env }}
 
     defaults:
       run:
@@ -95,7 +79,7 @@ jobs:
       with:
         files: '["infra/terraform/providers.tf"]'
       env:
-        environment: ${{ matrix.env }}
+        environment: ${{ inputs.env }}
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -104,7 +88,7 @@ jobs:
 
     - name: Terraform Init
       run: terraform init
-      working-directory: ${{ matrix.tf-path }}
+      working-directory: ${{ inputs.tf-path }}
 
     - name: Terraform Format
       run: terraform fmt -check
@@ -112,28 +96,19 @@ jobs:
       working-directory: ${{ inputs.tf-path }}
 
     - name: Terraform Plan
-      run: terraform plan -var "environment=${{ matrix.env }}"
+      run: terraform plan -var "environment=${{ inputs.env }}"
       working-directory: ${{ inputs.tf-path }}
 
     - name: Terraform Apply
       # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -var "environment=${{ matrix.env }}" -auto-approve
+      run: terraform apply -var "environment=${{ inputs.env }}" -auto-approve
       working-directory: ${{ inputs.tf-path }} 
 
   terraform-outputs:
     needs: terraform
     name: 'Terraform Provisioning - Outputs'
-    if: needs.terraform.result == 'success'
     runs-on: ubuntu-latest
-    environment: 
-      name: ${{ matrix.env }}
-    strategy:
-      matrix:
-        env:
-          - dev
-          - test
-          - staging
-          - prod
+    environment: ${{ inputs.env }}
 
     defaults:
       run:
@@ -154,7 +129,7 @@ jobs:
       with:
         files: '["infra/terraform/providers.tf"]'
       env:
-        environment: ${{ matrix.env }}
+        environment: ${{ inputs.env }}
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
