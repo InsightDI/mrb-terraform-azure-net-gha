@@ -122,8 +122,8 @@ jobs:
 
   terraform-outputs:
     needs: terraform
-    if: ${{ needs.terraform.outputs.env == matrix.env }}
     name: 'Terraform Provisioning - Outputs'
+    if: needs.terraform.result == 'success'
     runs-on: ubuntu-latest
     environment: 
       name: ${{ matrix.env }}
