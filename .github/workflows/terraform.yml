@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: ${{ matrix.env }}
-    if: matrix.env == 'dev'
+    if: jobs.tf-lint.environment == 'dev'
     continue-on-error: true
     strategy:
       matrix:
