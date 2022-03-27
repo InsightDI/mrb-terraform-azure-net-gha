@@ -29,6 +29,7 @@ runs:
     - name: Terraform Init
       run: |
         echo $PWD
+        ls -lR
         terraform init
       working-directory: ${{ inputs.tf-path }}
       shell: bash
