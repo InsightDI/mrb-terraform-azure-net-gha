@@ -10,17 +10,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: Checkout
-      - id: hello-world
-        uses: ./.github/actions/hello-world
-        with:
-          who-to-greet: Matt
-      - run: echo random-number ${{ steps.hello-world.outputs.random-number }}
       - id: tf-lint
+        name: TF Lint
         uses: ./.github/actions/tf-lint
         with:
           env: dev
           tf-path: infra/terraform
       - id: terraform
+        name: Terraform Provisioning
         uses: ./.github/actions/terraform
         with:
           env: dev
