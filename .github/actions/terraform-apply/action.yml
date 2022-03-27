@@ -7,6 +7,9 @@ inputs:
   tf-path:
     required: true
     description: Path to terraform
+  TF_API_TOKEN:
+    required: true
+    description: Terraform Cloud API Token
 runs:
   using: composite
   steps:
@@ -21,7 +24,7 @@ runs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+        cli_config_credentials_token: ${{ inputs.TF_API_TOKEN }}
 
     - name: Terraform Init
       run: terraform init
