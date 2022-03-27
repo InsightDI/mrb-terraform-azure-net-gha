@@ -32,9 +32,10 @@ on:
 jobs:
   tf-lint:
     name: 'TF Lint'
-    if: ${{ inputs.env }} == dev
+    if: ${{ inputs.env == 'dev' }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.env }}
+    continue-on-error: true
 
     defaults:
       run:
@@ -47,7 +48,7 @@ jobs:
       - name: Setup TF Lint
         uses: terraform-linters/setup-tflint@v1
         with:
-          tflint_version: 10
+          tflint_version: latest
 
       - name: Init TFLint
         run: tflint --init
