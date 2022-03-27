@@ -67,7 +67,7 @@ jobs:
 
   terraform:
     name: 'Terraform Provisioning'
-    if: ${{ contains( fromJson(inputs.tf-lint, needs.tf-lint.outputs.env) || always() }}
+    if: ${{ contains( fromJson(inputs.tf-lint), needs.tf-lint.outputs.env) || always() }}
     needs: tf-lint
     runs-on: ubuntu-latest
     environment: 
