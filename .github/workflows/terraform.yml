@@ -3,9 +3,11 @@ name: 'Terraform Provisioning'
 on:
   workflow_call:
     inputs:
-      env:
-        required: true
+      tf-lint:
+        required: false
         type: string
+        description: Environments to run tf-lint against
+        default: '["dev"]'
       tf-path:
         required: true
         type: string
@@ -35,15 +37,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: ${{ matrix.env }}
-    if: jobs.tf-lint.environment == 'dev'
+    if: ${{ contains(fromJSON(inputs.tf-lint), github.en
     continue-on-error: true
     strategy:
-      matrix:
-        env:
-          - dev
-          - test
-          - staging
-          - prod
+      matrix: ${{ fromJson(inputs.tf-lint) }}
 
     defaults:
       run:
