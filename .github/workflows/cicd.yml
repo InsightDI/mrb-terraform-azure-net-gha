@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     name: composite action
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         name: Checkout
       - id: hello-world
         uses: ./.github/actions/hello-world
