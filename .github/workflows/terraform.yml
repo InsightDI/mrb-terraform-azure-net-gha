@@ -40,6 +40,8 @@ jobs:
     continue-on-error: true
     strategy:
       matrix: ${{ fromJson(inputs.tf-lint) }}
+    outputs: 
+      env: ${{ matrix.env }}
 
     defaults:
       run:
@@ -65,7 +67,7 @@ jobs:
 
   terraform:
     name: 'Terraform Provisioning'
-    if: ${{ always() }}
+    if: ${{ needs.job_id.outputs.env == matrix.env || always() }}
     needs: tf-lint
     runs-on: ubuntu-latest
     environment: 
@@ -118,6 +120,7 @@ jobs:
 
   terraform-outputs:
     needs: terraform
+    if: ${{ needs.terraform.outputs.env == matrix.env }}
     name: 'Terraform Provisioning - Outputs'
     runs-on: ubuntu-latest
     environment: 
