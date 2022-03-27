@@ -30,7 +30,7 @@ jobs:
   #####################
   # Provision Infrastructure
   provision-infra:
-    name: Provision eShop Infrastructure - DEV
+    name: Provision eShop Infrastructure
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
     with:
       # env: dev
