@@ -32,10 +32,10 @@ on:
 jobs:
   tf-lint:
     name: 'TF Lint'
-    if: ${{ matrix.env == 'dev' }}
     runs-on: ubuntu-latest
     environment: 
       name: ${{ matrix.env }}
+    if: matrix.env == 'dev'
     continue-on-error: true
     strategy:
       matrix:
