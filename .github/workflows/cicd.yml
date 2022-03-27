@@ -33,7 +33,7 @@ jobs:
     name: Provision eShop Infrastructure - DEV
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/terraform.yml@mrb/initial
     with:
-      env: dev
+      # env: dev
       tf-path: infra/terraform
       output-vars: |
         echo ::set-output name=resource_group_id::$(terraform output -json resource_group_id | tr -d '"')
