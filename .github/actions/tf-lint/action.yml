@@ -1,20 +1,12 @@
 name: tf-lint
 description: Greet someone
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
-    required: true
-    default: 'World'
   env:
     required: true
     description: Environment name
   tf-path:
     required: true
     description: Path to terraform
-outputs:
-  random-number:
-    description: Random number
-    value: ${{ steps.random-number-generator.outputs.random-id }}
 runs:
   using: composite
   steps:

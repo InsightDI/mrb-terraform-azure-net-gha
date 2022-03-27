@@ -1,0 +1,46 @@
+name: Terraform Provisioning
+description: Greet someone
+inputs:
+  env:
+    required: true
+    description: Environment name
+  tf-path:
+    required: true
+    description: Path to terraform
+runs:
+  using: composite
+  steps:
+
+    - name: Replace Tokens - providers.tf
+      uses: cschleiden/replace-tokens@v1
+      with:
+        files: '["infra/terraform/providers.tf"]'
+      env:
+        environment: ${{ inputs.env }}
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - name: Terraform Init
+      run: terraform init
+      working-directory: ${{ inputs.tf-path }}
+      shell: bash
+
+    - name: Terraform Format
+      run: terraform fmt -check
+      continue-on-error: true
+      working-directory: ${{ inputs.tf-path }}
+      shell: bash
+
+    - name: Terraform Plan
+      run: terraform plan -var "environment=${{ inputs.env }}"
+      working-directory: ${{ inputs.tf-path }}
+      shell: bash
+
+    - name: Terraform Apply
+      # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -var "environment=${{ inputs.env }}" -auto-approve
+      working-directory: ${{ inputs.tf-path }} 
+      shell: bash
