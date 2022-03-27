@@ -13,6 +13,9 @@ on:
 jobs:
   terraform-composite-matrix:
     runs-on: ubuntu-latest
+    if: |
+      ${{ job.environment.name == 'dev'}} ||
+      ${{ (job.environment.name == 'test' && jobs.terraform-composite-matrix.dev == 'success')}}
     name: Terraform Provisioning - Composite Action Matrix
     environment: ${{ matrix.env }}
     strategy:
@@ -23,6 +26,8 @@ jobs:
           - test
           - staging
           - prod
+    outputs: 
+      ${{ matrix.env }}: "success"
     steps:
       - uses: actions/checkout@v2
         name: Checkout
