@@ -1,0 +1,41 @@
+name: 'Terraform Deprovisioning'
+
+on:
+  workflow_call:
+    inputs:
+      tf-path:
+        required: true
+        type: string
+    secrets:
+      TF_API_TOKEN:
+        required: true
+
+jobs:
+  terraform-composite-matrix:
+    runs-on: ubuntu-latest
+    name: Terraform Provisioning - Composite Action Matrix
+    environment: ${{ matrix.env }}
+    strategy:
+      matrix:
+        env: 
+          - dev
+          - test
+          - staging
+          - prod
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout
+      - id: tf-lint
+        name: TF Lint
+        uses: ./.github/actions/tf-lint
+        with:
+          env: ${{ matrix.env }}
+          tf-path: infra/terraform
+        continue-on-error: true
+      - id: terraform
+        name: Terraform Provisioning
+        uses: ./.github/actions/terraform-apply
+        with:
+          env: ${{ matrix.env }}
+          tf-path: infra/terraform
+          TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}

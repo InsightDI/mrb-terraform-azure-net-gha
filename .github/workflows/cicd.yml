@@ -4,27 +4,34 @@ on:
   push:
 
 jobs:
-  hello_world_job:
-    runs-on: ubuntu-latest
-    name: composite action
-    environment: dev
-    steps:
-      - uses: actions/checkout@v2
-        name: Checkout
-      - id: tf-lint
-        name: TF Lint
-        uses: ./.github/actions/tf-lint
-        with:
-          env: dev
-          tf-path: infra/terraform
-        continue-on-error: true
-      - id: terraform
-        name: Terraform Provisioning
-        uses: ./.github/actions/terraform-apply
-        with:
-          env: dev
-          tf-path: infra/terraform
-          TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  terraform-composite-matrix-reusable:
+    name: Terraform Provisioning
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/composite-terraform.yml@mrb/initial
+    with:
+      tf-path: infra/terraform
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+      
+  # terraform-composite:
+  #   runs-on: ubuntu-latest
+  #   name: composite action
+  #   environment: dev
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       name: Checkout
+  #     - id: tf-lint
+  #       name: TF Lint
+  #       uses: ./.github/actions/tf-lint
+  #       with:
+  #         env: dev
+  #         tf-path: infra/terraform
+  #       continue-on-error: true
+  #     - id: terraform
+  #       name: Terraform Provisioning
+  #       uses: ./.github/actions/terraform-apply
+  #       with:
+  #         env: dev
+  #         tf-path: infra/terraform
+  #         TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
 
 
