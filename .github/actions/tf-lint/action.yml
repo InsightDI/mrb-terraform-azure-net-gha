@@ -1,0 +1,34 @@
+name: tf-lint
+description: Greet someone
+inputs:
+  who-to-greet:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+  env:
+    required: true
+    description: Environment name
+  tf-path:
+    required: true
+    description: Path to terraform
+outputs:
+  random-number:
+    description: Random number
+    value: ${{ steps.random-number-generator.outputs.random-id }}
+runs:
+  using: composite
+  steps:
+    - name: Setup TF Lint
+      uses: terraform-linters/setup-tflint@v1
+      with:
+        tflint_version: latest
+
+    - name: Init TFLint
+      run: tflint --init
+      working-directory: ${{ inputs.tf-path }}
+      shell: bash
+
+    - name: Run TFLint
+      run: tflint --var="environment=${{ inputs.env }}" -f json
+      working-directory: ${{ inputs.tf-path }}
+      shell: bash

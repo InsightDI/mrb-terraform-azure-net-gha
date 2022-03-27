@@ -15,6 +15,12 @@ jobs:
         with:
           who-to-greet: Matt
       - run: echo random-number ${{ steps.hello-world.outputs.random-number }}
+      - id: tf-lint
+        uses: ./.github/actions/tf-lint
+        with:
+          env: dev
+          tf-path: infra/terraform
+
 
 
 #   #####################
