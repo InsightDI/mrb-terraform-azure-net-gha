@@ -7,7 +7,7 @@ on:
         required: false
         type: string
         description: Environments to run tf-lint against
-        default: '["dev"]'
+        default: '{"env":["dev"]}'
       tf-path:
         required: true
         type: string
