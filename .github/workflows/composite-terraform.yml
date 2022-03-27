@@ -16,6 +16,7 @@ jobs:
     name: Terraform Provisioning - Composite Action Matrix
     environment: ${{ matrix.env }}
     strategy:
+      max-parallel: 1
       matrix:
         env: 
           - dev
