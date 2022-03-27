@@ -27,7 +27,9 @@ runs:
         cli_config_credentials_token: ${{ inputs.TF_API_TOKEN }}
 
     - name: Terraform Init
-      run: terraform init
+      run: |
+        echo $PWD
+        terraform init
       working-directory: ${{ inputs.tf-path }}
       shell: bash
 
