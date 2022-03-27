@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.9"
+      version = "~> 3"
     }
   }
 
@@ -10,7 +10,8 @@ terraform {
     organization = "mbraunwart-test"
 
     workspaces {
-      name = "tf-demo-#{environment}#"
+      # name = "tf-demo-#{environment}#"
+      name = "tf-demo-dev"
     }
   }
 }
