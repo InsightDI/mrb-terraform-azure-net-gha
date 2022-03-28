@@ -29,7 +29,7 @@ jobs:
 
           $json = $includes | ConvertTo-Json -Depth 5
 
-          Write-Host "::set-output name=matrix::$json"
+          echo "::set-output name=matrix::$json"
         shell: pwsh
         id: matrix_output
         continue-on-error: true
