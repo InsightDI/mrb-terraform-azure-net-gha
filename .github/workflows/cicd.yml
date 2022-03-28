@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     name: matrix job
     strategy:
-      matrix: ${{ jobs.dyanmic-job.outputs.matrix_output}}
+      matrix: ${{ fromJSON(jobs.dyanmic-job.outputs.matrix_output) }}
     steps:
       - run: echo "woo"
 
