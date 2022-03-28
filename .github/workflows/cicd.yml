@@ -4,13 +4,39 @@ on:
   push:
 
 jobs:
-  terraform-composite-matrix-reusable:
-    name: Terraform Provisioning
-    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/composite-terraform.yml@mrb/initial
-    with:
-      tf-path: infra/terraform
-    secrets:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  dynamic-job:
+    runs-on: ubuntu-latest
+    name: create job
+    steps:
+      - run: |
+          $environments = @{
+            environment: "dev"
+            depends_on: @()
+            tf_lint: true
+          }
+
+          $environments += @{
+            environment: "test"
+            depends_on: @()
+            tf_lint: false
+          }
+
+          $includes = @{
+            includes = $environments
+          }
+
+          $includes | ConvertTo-Json
+
+          Write-Host $includes
+        shell: pwsh
+
+  # terraform-composite-matrix-reusable:
+  #   name: Terraform Provisioning
+  #   uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/composite-terraform.yml@mrb/initial
+  #   with:
+  #     tf-path: infra/terraform
+  #   secrets:
+  #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   # terraform-composite:
   #   runs-on: ubuntu-latest
