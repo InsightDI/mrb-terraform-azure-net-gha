@@ -12,11 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     name: matrix job
     environment: ${{ matrix.environment }}
+
     concurrency:
       group: ${{ matrix.environment }}
       cancel-in-progress: false
     strategy:
       matrix: ${{ fromJson(inputs.matrix_output) }}
+      max-parallel: 1
     steps:
       - run: |
           echo ${{ matrix.environment }}
