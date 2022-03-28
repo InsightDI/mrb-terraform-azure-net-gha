@@ -29,7 +29,7 @@ jobs:
 
           $includes | ConvertTo-Json
 
-          Write-Host $includes
+          Write-Host $includes | ConvertFrom-Json
         shell: pwsh
 
   # terraform-composite-matrix-reusable:
