@@ -14,6 +14,7 @@ jobs:
     environment: ${{ matrix.environment }}
     concurrency:
       group: ${{ matrix.environment }}
+      cancel-in-progress: false
     strategy:
       matrix: ${{ fromJson(inputs.matrix_output) }}
     steps:
