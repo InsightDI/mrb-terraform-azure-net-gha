@@ -14,13 +14,13 @@ jobs:
           $environments += @{
             environment = "dev"
             depends_on = @()
-            tf_lint = true
+            tf_lint = $true
           }
 
           $environments += @{
             environment = "test"
             depends_on = @("dev")
-            tf_lint = false
+            tf_lint = $false
           }
 
           $includes = @{
