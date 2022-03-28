@@ -30,6 +30,7 @@ jobs:
           $includes = @{
             include = $environments
             os = @("windows-latest", "ubuntu-latest")
+            environment = @("dev", "test")
           }
 
           $json = $includes | ConvertTo-Json -Depth 5 -Compress
