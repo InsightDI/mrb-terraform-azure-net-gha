@@ -34,6 +34,7 @@ jobs:
         id: matrix_output
         continue-on-error: true
       - run: echo "${{ steps.matrix_output.outputs.matrix }}"
+        shell: bash
 
   # terraform-composite-matrix-reusable:
   #   name: Terraform Provisioning
