@@ -19,12 +19,12 @@ jobs:
 
           $environments += @{
             environment = "test"
-            depends_on = @()
+            depends_on = @("dev")
             tf_lint = false
           }
 
           $includes = @{
-            includes = $environments
+            include = $environments
           }
 
           $includes | ConvertTo-Json
