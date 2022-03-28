@@ -9,8 +9,8 @@ jobs:
     name: create job
     steps:
       - run: |
-          $environments = ()
-          
+          $environments = @()
+
           $environments += @{
             environment = "dev"
             depends_on = @()
