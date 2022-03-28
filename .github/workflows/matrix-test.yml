@@ -6,9 +6,6 @@ on:
       matrix_output:
         required: true
         type: string
-    secrets:
-      TF_API_TOKEN:
-        required: true
 
 jobs:
   matrix-job:
