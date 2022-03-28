@@ -52,16 +52,17 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.dynamic-job.outputs.matrix_output) }}
     steps:
-      - run: |
-          if(${{ matrix.depends_on[0] }} -eq "dev") {
-            if(${{ jobs.matrix-job.strategy }})
-          }
-        shell: pwsh -command ". {0}"
-        name: check depends status
+      # - run: |
+      #     if(${{ matrix.depends_on[0] }} -eq "dev") {
+      #       if(${{ jobs.matrix-job.strategy }})
+      #     }
+      #   shell: pwsh -command ". {0}"
+      #   name: check depends status
       - run: |
           echo ${{ matrix.environment }}
           echo ${{ matrix.depends_on[0] }}
           echo ${{ matrix.tf_lint }}
+          echo ${{ matrix.os }}
 
   # terraform-composite-matrix-reusable:
   #   name: Terraform Provisioning
