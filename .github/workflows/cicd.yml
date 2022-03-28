@@ -47,7 +47,7 @@ jobs:
     steps:
       - run: |
           echo ${{ matrix.environment }}
-          echo ${{ matrix.depends_on}}
+          echo ${{ matrix.depends_on[0] }}
           echo ${{ matrix.tf_lint }}
 
   # terraform-composite-matrix-reusable:
