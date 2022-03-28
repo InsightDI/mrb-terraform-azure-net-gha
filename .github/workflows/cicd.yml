@@ -45,7 +45,10 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.dynamic-job.outputs.matrix_output) }}
     steps:
-      - run: echo "woo"
+      - run: |
+          echo ${{ matrix.environment }}
+          echo ${{ matrix.depends_on}}
+          echo ${{ matrix.tf_lint }}
 
   # terraform-composite-matrix-reusable:
   #   name: Terraform Provisioning
