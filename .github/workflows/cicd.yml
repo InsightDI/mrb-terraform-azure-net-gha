@@ -87,31 +87,31 @@ jobs:
           echo ${{ matrix.os }}
   matrix-job-3:
     name: Terraform Provisioning
-    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/composite-terraform.yml@mrb/initial
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/matrix-test.yml@mrb/initial
     needs: dynamic-job
     with:
       matrix_output: needs.dynamic-job.outputs.matrix_output
   matrix-job-4:
     name: Terraform Provisioning
-    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/composite-terraform.yml@mrb/initial
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/matrix-test.yml@mrb/initial
     needs: dynamic-job
     with:
       matrix_output: needs.dynamic-job.outputs.matrix_output
   matrix-job-5:
     name: Terraform Provisioning
-    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/composite-terraform.yml@mrb/initial
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/matrix-test.yml@mrb/initial
     needs: dynamic-job
     with:
       matrix_output: needs.dynamic-job.outputs.matrix_output
   matrix-job-6:
     name: Terraform Provisioning
-    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/composite-terraform.yml@mrb/initial
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/matrix-test.yml@mrb/initial
     needs: dynamic-job
     with:
       matrix_output: needs.dynamic-job.outputs.matrix_output
   matrix-job-7:
     name: Terraform Provisioning
-    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/composite-terraform.yml@mrb/initial
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/matrix-test.yml@mrb/initial
     needs: dynamic-job
     with:
       matrix_output: needs.dynamic-job.outputs.matrix_output
