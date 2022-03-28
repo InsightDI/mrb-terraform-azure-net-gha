@@ -43,7 +43,7 @@ jobs:
     name: matrix job
     needs: dynamic-job
     strategy:
-      matrix: ${{ fromJSON(needs.dynamic-job.outputs.matrix_output) }}
+      matrix: ${{ fromJjson(needs.dynamic-job.outputs.matrix_output) }}
     steps:
       - run: echo "woo"
 
