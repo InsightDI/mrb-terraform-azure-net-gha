@@ -1,0 +1,29 @@
+name: 'Matrix Testing'
+
+on:
+  workflow_call:
+    inputs:
+      matrix_output:
+        required: true
+        type: string
+    secrets:
+      TF_API_TOKEN:
+        required: true
+
+jobs:
+  matrix-job:
+    runs-on: ubuntu-latest
+    name: matrix job 3
+    needs: dynamic-job
+    environment: ${{ matrix.environment }}
+    concurrency:
+      group: ${{ matrix.environment }}
+      cancel-in-progress: true
+    strategy:
+      matrix: ${{ fromJson(inputs.matrix_output) }}
+    steps:
+      - run: |
+          echo ${{ matrix.environment }}
+          echo ${{ matrix.depends_on[0] }}
+          echo ${{ matrix.tf_lint }}
+          echo ${{ matrix.os }}

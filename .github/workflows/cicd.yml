@@ -86,27 +86,35 @@ jobs:
           echo ${{ matrix.tf_lint }}
           echo ${{ matrix.os }}
   matrix-job-3:
-    runs-on: ubuntu-latest
-    name: matrix job 3
+    name: Terraform Provisioning
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/composite-terraform.yml@mrb/initial
     needs: dynamic-job
-    environment: ${{ matrix.environment }}
-    concurrency:
-      group: ${{ matrix.environment }}
-      cancel-in-progress: true
-    strategy:
-      matrix: ${{ fromJson(needs.dynamic-job.outputs.matrix_output) }}
-    steps:
-      # - run: |
-      #     if(${{ matrix.depends_on[0] }} -eq "dev") {
-      #       if(${{ jobs.matrix-job.strategy }})
-      #     }
-      #   shell: pwsh -command ". {0}"
-      #   name: check depends status
-      - run: |
-          echo ${{ matrix.environment }}
-          echo ${{ matrix.depends_on[0] }}
-          echo ${{ matrix.tf_lint }}
-          echo ${{ matrix.os }}
+    with:
+      matrix_output: needs.dynamic-job.outputs.matrix_output
+  matrix-job-4:
+    name: Terraform Provisioning
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/composite-terraform.yml@mrb/initial
+    needs: dynamic-job
+    with:
+      matrix_output: needs.dynamic-job.outputs.matrix_output
+  matrix-job-5:
+    name: Terraform Provisioning
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/composite-terraform.yml@mrb/initial
+    needs: dynamic-job
+    with:
+      matrix_output: needs.dynamic-job.outputs.matrix_output
+  matrix-job-6:
+    name: Terraform Provisioning
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/composite-terraform.yml@mrb/initial
+    needs: dynamic-job
+    with:
+      matrix_output: needs.dynamic-job.outputs.matrix_output
+  matrix-job-7:
+    name: Terraform Provisioning
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/composite-terraform.yml@mrb/initial
+    needs: dynamic-job
+    with:
+      matrix_output: needs.dynamic-job.outputs.matrix_output
 
   # terraform-composite-matrix-reusable:
   #   name: Terraform Provisioning
