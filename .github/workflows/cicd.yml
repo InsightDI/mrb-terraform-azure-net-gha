@@ -29,7 +29,6 @@ jobs:
 
           $includes = @{
             include = $environments
-            os = @("windows-latest", "ubuntu-latest")
             environment = @("dev", "test")
           }
 
@@ -43,6 +42,28 @@ jobs:
       - run: echo "${{ fromJson(steps.matrix_output.outputs.matrix) }}"
         shell: bash
   matrix-job:
+    runs-on: ubuntu-latest
+    name: matrix job
+    needs: dynamic-job
+    environment: ${{ matrix.environment }}
+    concurrency:
+      group: ${{ matrix.environment }}
+      cancel-in-progress: true
+    strategy:
+      matrix: ${{ fromJson(needs.dynamic-job.outputs.matrix_output) }}
+    steps:
+      # - run: |
+      #     if(${{ matrix.depends_on[0] }} -eq "dev") {
+      #       if(${{ jobs.matrix-job.strategy }})
+      #     }
+      #   shell: pwsh -command ". {0}"
+      #   name: check depends status
+      - run: |
+          echo ${{ matrix.environment }}
+          echo ${{ matrix.depends_on[0] }}
+          echo ${{ matrix.tf_lint }}
+          echo ${{ matrix.os }}  
+  matrix-job-2:
     runs-on: ubuntu-latest
     name: matrix job
     needs: dynamic-job
