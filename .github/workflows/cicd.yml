@@ -7,6 +7,8 @@ jobs:
   dynamic-job:
     runs-on: ubuntu-latest
     name: create job
+    outputs:
+      matrix_output: ${{ steps.matrix_output.outputs.matrix }}
     steps:
       - run: |
           $environments = @()
@@ -36,6 +38,13 @@ jobs:
         continue-on-error: true
       - run: echo "${{ fromJson(steps.matrix_output.outputs.matrix) }}"
         shell: bash
+  matrix-job:
+    runs-on: ubuntu-latest
+    name: matrix job
+    strategy:
+      matrix: ${{ jobs.dyanmic-job.outputs.matrix_output}}
+    steps:
+      - run: echo "woo"
 
   # terraform-composite-matrix-reusable:
   #   name: Terraform Provisioning
