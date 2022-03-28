@@ -27,7 +27,7 @@ jobs:
             include = $environments
           }
 
-          Write-Host "::set-output name=matrix::`"$($includes | ConvertTo-Json -Depth 5)`""
+          Write-Host "::set-output name=matrix::'$($includes | ConvertTo-Json -Depth 5)'"
           Write-Host "${{ steps.matrix_output.outputs.matrix }}"
           exit 0
         shell: pwsh -command ". {0}"
