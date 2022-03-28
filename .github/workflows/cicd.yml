@@ -31,7 +31,7 @@ jobs:
 
           $json = $includes | ConvertTo-Json -Depth 5 -Compress
           Write-Host $json
-          Write-Host "::set-output name=matrix::'$($json)'"
+          Write-Host "::set-output name=matrix::$($json)"
           Write-Host "${{ steps.matrix_output.outputs.matrix }}"
         shell: pwsh -command ". {0}"
         id: matrix_output
