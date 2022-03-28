@@ -11,7 +11,6 @@ jobs:
   matrix-job:
     runs-on: ubuntu-latest
     name: matrix job 3
-    needs: dynamic-job
     environment: ${{ matrix.environment }}
     concurrency:
       group: ${{ matrix.environment }}
