@@ -27,9 +27,9 @@ jobs:
             include = $environments
           }
 
-          $includes | ConvertTo-Json -Depth 5
+          $json = $includes | ConvertTo-Json -Depth 5
 
-          Write-Host ($includes | ConvertFrom-Json -Depth 5)
+          Write-Host ($json | ConvertFrom-Json -Depth 5)
         shell: pwsh
 
   # terraform-composite-matrix-reusable:
