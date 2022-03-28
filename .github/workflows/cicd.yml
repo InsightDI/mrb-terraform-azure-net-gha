@@ -27,7 +27,7 @@ jobs:
             include = $environments
           }
 
-          $json = $includes | ConvertTo-Json -Depth 5
+          $json = $includes | ConvertTo-Json -Depth 5 -Compress
           Write-Host $json
           Write-Host "::set-output name=matrix::'$($json)'"
           Write-Host "${{ steps.matrix_output.outputs.matrix }}"
