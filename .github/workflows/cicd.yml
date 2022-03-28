@@ -17,16 +17,19 @@ jobs:
             environment = "dev"
             depends_on = @()
             tf_lint = $true
+            wait = 30
           }
 
           $environments += @{
             environment = "test"
             depends_on = @("dev")
+            wait = 45
             tf_lint = $false
           }
 
           $includes = @{
             include = $environments
+            os: @("windows-latest", "ubuntu-latest")
           }
 
           $json = $includes | ConvertTo-Json -Depth 5 -Compress
@@ -42,9 +45,19 @@ jobs:
     runs-on: ubuntu-latest
     name: matrix job
     needs: dynamic-job
+    environment: ${{ matrix.environment }}
+    concurrency:
+      group: ${{ matrix.environment }}
+      cancel-in-progress: true
     strategy:
       matrix: ${{ fromJson(needs.dynamic-job.outputs.matrix_output) }}
     steps:
+      - run: |
+          if(${{ matrix.depends_on[0] }} -eq "dev") {
+            if(${{ jobs.matrix-job.strategy }})
+          }
+        shell: pwsh -command ". {0}"
+        name: check depends status
       - run: |
           echo ${{ matrix.environment }}
           echo ${{ matrix.depends_on[0] }}
