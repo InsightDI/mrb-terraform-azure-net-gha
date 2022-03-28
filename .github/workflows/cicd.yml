@@ -41,50 +41,18 @@ jobs:
         continue-on-error: true
       - run: echo "${{ fromJson(steps.matrix_output.outputs.matrix) }}"
         shell: bash
-  matrix-job:
-    runs-on: ubuntu-latest
-    name: matrix job 1
+  matrix-job-1: 
+    name: Matrix Job 1
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/matrix-test.yml@mrb/initial
     needs: dynamic-job
-    environment: ${{ matrix.environment }}
-    concurrency:
-      group: ${{ matrix.environment }}
-      cancel-in-progress: true
-    strategy:
-      matrix: ${{ fromJson(needs.dynamic-job.outputs.matrix_output) }}
-    steps:
-      # - run: |
-      #     if(${{ matrix.depends_on[0] }} -eq "dev") {
-      #       if(${{ jobs.matrix-job.strategy }})
-      #     }
-      #   shell: pwsh -command ". {0}"
-      #   name: check depends status
-      - run: |
-          echo ${{ matrix.environment }}
-          echo ${{ matrix.depends_on[0] }}
-          echo ${{ matrix.tf_lint }}
-          echo ${{ matrix.os }}  
+    with:
+      matrix_output: ${{ needs.dynamic-job.outputs.matrix_output }}
   matrix-job-2:
-    runs-on: ubuntu-latest
-    name: matrix job 2
+    name: Matrix Job 2
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/matrix-test.yml@mrb/initial
     needs: dynamic-job
-    environment: ${{ matrix.environment }}
-    concurrency:
-      group: ${{ matrix.environment }}
-      cancel-in-progress: true
-    strategy:
-      matrix: ${{ fromJson(needs.dynamic-job.outputs.matrix_output) }}
-    steps:
-      # - run: |
-      #     if(${{ matrix.depends_on[0] }} -eq "dev") {
-      #       if(${{ jobs.matrix-job.strategy }})
-      #     }
-      #   shell: pwsh -command ". {0}"
-      #   name: check depends status
-      - run: |
-          echo ${{ matrix.environment }}
-          echo ${{ matrix.depends_on[0] }}
-          echo ${{ matrix.tf_lint }}
-          echo ${{ matrix.os }}
+    with:
+      matrix_output: ${{ needs.dynamic-job.outputs.matrix_output }}
   matrix-job-3:
     name: Matrix Job 3
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/matrix-test.yml@mrb/initial
@@ -92,24 +60,30 @@ jobs:
     with:
       matrix_output: ${{ needs.dynamic-job.outputs.matrix_output }}
   matrix-job-4:
-    name: Matrix Job 4
+    name: Matrix Job 3
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/matrix-test.yml@mrb/initial
     needs: dynamic-job
     with:
       matrix_output: ${{ needs.dynamic-job.outputs.matrix_output }}
   matrix-job-5:
-    name: Matrix Job 5
+    name: Matrix Job 4
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/matrix-test.yml@mrb/initial
     needs: dynamic-job
     with:
       matrix_output: ${{ needs.dynamic-job.outputs.matrix_output }}
   matrix-job-6:
-    name: Matrix Job 6
+    name: Matrix Job 5
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/matrix-test.yml@mrb/initial
     needs: dynamic-job
     with:
       matrix_output: ${{ needs.dynamic-job.outputs.matrix_output }}
   matrix-job-7:
+    name: Matrix Job 6
+    uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/matrix-test.yml@mrb/initial
+    needs: dynamic-job
+    with:
+      matrix_output: ${{ needs.dynamic-job.outputs.matrix_output }}
+  matrix-job-8:
     name: Matrix Job 7
     uses: InsightDI/mrb-terraform-azure-net-gha/.github/workflows/matrix-test.yml@mrb/initial
     needs: dynamic-job
